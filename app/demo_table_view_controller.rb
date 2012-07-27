@@ -30,14 +30,9 @@ class DemoTableViewController < UITableViewController
   end
   
   def pushMovieWithURLString(inURLString, animated:animated)
+    p "PUSHING #{inURLString}"
     movie_dictionaries = self.movieDictionaries
-    
-    puts "*"*50
-    puts movie_dictionaries.inspect
-    puts "-"*50
-    puts movie_dictionaries.length
-    puts movie_dictionaries.map &:class
-    puts "*"*50
+
     movie_dictionaries.each do |dictionary|
 
       urlString = dictionary.objectForKey("url")

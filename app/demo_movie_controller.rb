@@ -5,6 +5,7 @@ class DemoMovieController < UIViewController
   MOVIE_CACHE = "MovieCache"
   
   def initWithURL(ns_url)
+    p "INITIALIZE WITH URL: #{ns_url.path}"
     @movieURL = ns_url    
     self
   end
@@ -24,9 +25,12 @@ class DemoMovieController < UIViewController
   
   #may need to unwind this a bit to nil check
   def self.getCachedData(url)
+    p "RETRIEVE #{url.path}"
     if cache = NSUserDefaults.standardUserDefaults.objectForKey(MOVIE_CACHE)
+      p "GOT IT!"
       return cache.objectForKey(url.absoluteString)
     end
+    p "DON'T GOT IT!"
     nil
   end
   
@@ -86,7 +90,7 @@ class DemoMovieController < UIViewController
   end
 
   def loadMovie
-
+    p "LOAD MOVIE"
     @movie = SwiffMovie.alloc.initWithData(@movieData)
 
 #   @timelineSlider.setMaximumValue(@movie.frames.count -1)
@@ -97,6 +101,7 @@ class DemoMovieController < UIViewController
     
     #if PROMOTE_ALL_PLACED_OBJECTS_TO_LAYERS
       @movie.frames.each do |frame|
+        p "FOUND FRAME"
         frame.placedObjects.each do |object|
           object.setWantsLayer(true)
         end
@@ -112,11 +117,17 @@ class DemoMovieController < UIViewController
   end
   
   def loadMovieData
+    p "NEED TO LOAD #{@movieURL.path} (#{@movieURL.scheme})"
     if @movieURL.scheme == "bundle"
+      p "GET THE BUNDLE"
       filename = @movieURL.resourceSpecifier
+      p filename
+      p filename.stringByDeletingPathExtension
+      p filename.pathExtension
       resource_path = NSBundle.mainBundle.pathForResource(filename.stringByDeletingPathExtension, ofType:filename.pathExtension)
       
       if resource_path
+        p "GOT A RESOURCE PATH -- LETS DO IT"
         @movieData = NSData.alloc.initWithContentsOfFile(resource_path)
         self.loadMovie
       end
@@ -170,8 +181,12 @@ class DemoMovieController < UIViewController
 
   #pragma mark SwiffMovieView Delegate
   def swiffView(swiffView, didUpdateCurrentFrame:frame)
-    i = @movieView.playhead.frame.indexInMovie
-    @timelineSlider.setValue(i.to_f)
+    if @movieView.playhead.frame.nil?
+      @timelineSlider.setValue(1)
+    else
+      i = @movieView.playhead.frame.indexInMovie
+      @timelineSlider.setValue(i.to_f)
+    end
   end
 
   
