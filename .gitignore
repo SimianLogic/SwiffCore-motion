@@ -1,5 +1,7 @@
 .repl_history
+.dat*
 build
+.DS_Store
 resources/*.nib
 resources/*.momd
 resources/*.storyboardc
