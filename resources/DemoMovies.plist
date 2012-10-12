@@ -22,6 +22,25 @@
 		</dict>
 		<dict>
 			<key>url</key>
+			<string>bundle:TestSuiteAS3.swf</string>
+			<key>classname</key>
+			<string>export_test</string>
+			<key>name</key>
+			<string>Test Suite w/Export</string>
+			<key>author</key>
+			<string>SwiffCore</string>
+		</dict>
+		<dict>
+			<key>New item</key>
+			<dict>
+				<key>url</key>
+				<string>bundle:TestSuite.swf</string>
+				<key>name</key>
+				<string>Test Suite</string>
+				<key>author</key>
+				<string>SwiffCore</string>
+			</dict>
+			<key>url</key>
 			<string>bundle:TestSuite.swf</string>
 			<key>name</key>
 			<string>Test Suite</string>

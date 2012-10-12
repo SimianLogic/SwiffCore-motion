@@ -40,8 +40,9 @@ class DemoTableViewController < UITableViewController
 
         url = NSURL.URLWithString(urlString)
         title = dictionary.objectForKey("name")
+        classname = dictionary.objectForKey("classname")
 
-        vc = DemoMovieController.new.initWithURL(url)
+        vc = DemoMovieController.alloc.initWithURL(url, andSymbol:classname)
         vc.setTitle(title)
         
         self.navigationController.pushViewController(vc, animated:animated)

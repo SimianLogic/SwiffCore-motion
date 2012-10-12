@@ -4,9 +4,10 @@ class DemoMovieController < UIViewController
   
   MOVIE_CACHE = "MovieCache"
   
-  def initWithURL(ns_url)
+  def initWithURL(ns_url, andSymbol:classname)
     p "INITIALIZE WITH URL: #{ns_url.path}"
-    @movieURL = ns_url    
+    @movieURL = ns_url
+    @classname = classname
     self
   end
   
@@ -93,14 +94,16 @@ class DemoMovieController < UIViewController
     p "LOAD MOVIE"
     @movie = SwiffMovie.alloc.initWithData(@movieData)
 
-#   @timelineSlider.setMaximumValue(@movie.frames.count -1)
-    @timelineSlider.maximumValue = @movie.frames.count - 1
+    clip = @classname.nil? ? @movie : @movie.definitionWithExportedName(@classname)
+
+
+    @timelineSlider.maximumValue = clip.frames.count - 1
 
     movie_frame = self.view.bounds
     movie_frame.size.height -= 44
     
     #if PROMOTE_ALL_PLACED_OBJECTS_TO_LAYERS
-      @movie.frames.each do |frame|
+      clip.frames.each do |frame|
         p "FOUND FRAME"
         frame.placedObjects.each do |object|
           object.setWantsLayer(true)
@@ -108,7 +111,7 @@ class DemoMovieController < UIViewController
       end
     #end
     
-    @movieView = SwiffView.alloc.initWithFrame(movie_frame, movie:@movie)
+    @movieView = SwiffView.alloc.initWithFrame(movie_frame, movie:clip)
     @movieView.setDelegate(self)
     @movieView.setBackgroundColor(UIColor.whiteColor)
     @movieView.setAutoresizingMask(UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight)
